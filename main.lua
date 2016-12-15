@@ -1,26 +1,28 @@
+local image_path = ""
+local image = {}
+local anim  = {}
+
+local width = 128
+local speed = 0.1
+local frame = 4
+local scale = 2
+
+local time  = 0
+local last_modtime = 0
+
+local created  = false
+local modified = true
+
 function love.load()
 	require 'Anim'
 
-	width = 50
-	speed = 0.1
-	frame = 3
-	scale = 1
-	created = false
-
 	love.graphics.setDefaultFilter('nearest', 'nearest')
-
-	timer = 0
-	mtime = 0
-
-	name = "no"
-	image = {}
 end
 
 function love.update(dt)
-	timerx(dt)
-
 	if created then
 		anim:update(dt)
+		checkFile(dt)
 	end
 end
 
@@ -41,7 +43,9 @@ function love.draw()
 	love.graphics.print("7: Scale up, 8: Scale down", 5, 130)
 	love.graphics.print("Scale factor: " .. scale, 5, 145)
 
-	love.graphics.print(name, 300, 10)
+	if modtime then
+		love.graphics.print(image_path, 300, 10)
+	end
 end
 
 function newImage(i)
@@ -54,7 +58,7 @@ end
 
 function love.filedropped(file)
 	file:open("r")
-	name = file:getFilename()
+	image_path = 'img/' .. string.match(string.gsub(file:getFilename(),'/','\\'), "^.+\\(.+)$")
     imageData = love.image.newImageData(file)
     file:close()
     newImage(imageData)
@@ -82,18 +86,19 @@ function love.keypressed(key)
 	anim = newAnimation(img, width, img:getHeight(), speed, frame)
 end
 
-function timerx(dt)
-	timer = timer + dt
+function checkFile(dt)
+	time = time + dt
 
-	if timer > 1 then
-		modtime, errormsg = love.filesystem.getLastModified("test.txt")
+	if time > 1 then
+		modtime, errormsg = love.filesystem.getLastModified(image_path)
 
-		if modtime > mtime then
-			
-
+		if last_modtime == 0 then
+			last_modtime = modtime
+		elseif modtime > last_modtime then
+			newImage(image_path)
+			modified = true
 		end
 
-		timer = 0
-		mtime = modtime
+		time = 0
 	end
 end
