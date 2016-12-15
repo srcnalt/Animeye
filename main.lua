@@ -11,7 +11,6 @@ local time  = 0
 local last_modtime = 0
 
 local created  = false
-local modified = true
 
 function love.load()
 	require 'Anim'
@@ -29,6 +28,7 @@ end
 function love.draw()
 	if created then
 		anim:draw(300, 100, 0, scale, scale)
+		love.graphics.print(last_modtime, 300, 10)
 	end
 
 	love.graphics.print("1: Width up, 2: Width down", 5, 10)
@@ -42,13 +42,9 @@ function love.draw()
 
 	love.graphics.print("7: Scale up, 8: Scale down", 5, 130)
 	love.graphics.print("Scale factor: " .. scale, 5, 145)
-
-	if modtime then
-		love.graphics.print(image_path, 300, 10)
-	end
 end
 
-function newImage(i)
+function createImage(i)
     img = love.graphics.newImage(i)
 	local frame = math.ceil(img:getWidth() / width)
 	anim  = newAnimation(img, width, img:getHeight(), speed, frame)
@@ -61,7 +57,7 @@ function love.filedropped(file)
 	image_path = 'img/' .. string.match(string.gsub(file:getFilename(),'/','\\'), "^.+\\(.+)$")
     imageData = love.image.newImageData(file)
     file:close()
-    newImage(imageData)
+    createImage(imageData)
 end
 
 function love.keypressed(key)
@@ -95,8 +91,8 @@ function checkFile(dt)
 		if last_modtime == 0 then
 			last_modtime = modtime
 		elseif modtime > last_modtime then
-			newImage(image_path)
-			modified = true
+			createImage(image_path)
+			last_modtime = modtime
 		end
 
 		time = 0
