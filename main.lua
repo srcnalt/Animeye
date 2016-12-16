@@ -5,9 +5,6 @@ local anim  = {}
 local speed = 0.1
 local scale = 2
 
-local time  = 0
-local last_modtime = 0
-
 local created  = false
 
 local vars = {
@@ -20,7 +17,7 @@ local vars = {
 local suit   = require 'suit'
 local width_slider = {value = vars.width, min = 1, max = 256}
 local frame_slider = {value = vars.frame, min = 1, max = 32}
-local speed_slider = {value = vars.speed, min = 0, max = 2}
+local speed_slider = {value = vars.speed, min = 0, max = 1}
 local scale_slider = {value = vars.scale, min = 0, max = 5}
 
 function love.load()
@@ -30,9 +27,6 @@ function love.load()
 
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.graphics.setBackgroundColor(65,77,108, 255)
-	love.window.setMode(800, 600, {fullscreen = false, centered = true})
-
-	err = ''
 end
 
 function love.update(dt)
@@ -42,8 +36,6 @@ function love.update(dt)
 		if checkVars() then
 			createAnimation(image_data)
 		end
-
-		--checkChange(dt)
 	end
 
     suit.Label("Frame width: " .. math.floor(width_slider.value), {align = "left"}, 20, 10, 200, 20)
@@ -66,34 +58,16 @@ end
 
 function love.draw()
 	if created then
-		love.graphics.print(err, 0, 0)
-		anim:draw(550 - vars.width * vars.scale / 2, 300 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
+		anim:draw((love.graphics.getWidth() - 300) / 2 + 300 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
 	else
-		love.graphics.draw(drop, 500, 250)
+		love.graphics.draw(drop, (love.graphics.getWidth() - 300) / 2 + 250, love.graphics.getHeight() / 2 - 50)
 	end
 
 	love.graphics.setColor(20, 30, 45, 255)
-	--love.graphics.rectangle('fill', 0, 0, 300, 800)
+	love.graphics.rectangle('fill', 0, 0, 300, love.graphics.getHeight())
 	love.graphics.setColor(255, 255, 255, 255)
 
 	suit.draw()
-end
-
-function checkChange(dt)
-	time = time + dt
-
-	if time > 1 then
-		modtime, errormsg = love.filesystem.getLastModified(image_path)
-
-		if last_modtime == 0 then
-			last_modtime = modtime
-		elseif modtime > last_modtime or checkVars() then
-			createAnimation(image_data)
-			last_modtime = modtime
-		end
-
-		time = 0
-	end
 end
 
 function checkVars()
@@ -110,12 +84,11 @@ function getImageData()
 	file_data = file:read('*all')
 	file:close()
 
-	image_data = love.filesystem.newFile("outimage.png", "w")
+	image_data = love.filesystem.newFile("temp.png", "w")
 	image_data:write(file_data)
 	image_data:close()
 
-	image = love.graphics.newImage("outimage.png")
-	--love.filesystem.remove("outimage.png")
+	image = love.graphics.newImage("temp.png")
 end
 
 function createAnimation(img)
