@@ -75,7 +75,7 @@ function checkChange(dt)
 		if last_modtime == 0 then
 			last_modtime = modtime
 		elseif modtime > last_modtime or checkVars() then
-			createImage(image_path)
+			createImage(image_data)
 			last_modtime = modtime
 		end
 
@@ -96,9 +96,14 @@ function checkVars()
 	end
 end
 
+function getImageData(dir)
+	local file = io.open(dir, "r")
+    image_data = love.image.newImageData(file)
+    file:close()
+end
+
 function createImage(i)
     image = love.graphics.newImage(i)
-	local frame = math.ceil(image:getWidth() / vars.width)
 	anim  = newAnimation(image, vars.width, image:getHeight(), vars.speed, vars.frame)
 
 	created = true
@@ -106,8 +111,8 @@ end
 
 function love.filedropped(file)
 	file:open("r")
-	image_path = 'img/' .. string.match(string.gsub(file:getFilename(),'/','\\'), "^.+\\(.+)$")
-    imageData = love.image.newImageData(file)
+	image_path = file:getFilename()
+    local imageData = love.image.newImageData(file)
     file:close()
     createImage(imageData)
 end
