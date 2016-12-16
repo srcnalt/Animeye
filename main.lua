@@ -31,12 +31,19 @@ function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.graphics.setBackgroundColor(65,77,108, 255)
 	love.window.setMode(800, 600, {fullscreen = false, centered = true})
+
+	err = ''
 end
 
 function love.update(dt)
 	if created then
 		anim:update(dt)
-		checkChange(dt)
+
+		if checkVars() then
+			createAnimation(image_data)
+		end
+
+		--checkChange(dt)
 	end
 
     suit.Label("Frame width: " .. math.floor(width_slider.value), {align = "left"}, 20, 10, 200, 20)
@@ -50,21 +57,26 @@ function love.update(dt)
 
     suit.Label("Scale factor: " .. math.floor(scale_slider.value * 10) * 0.1, {align = "left"}, 20, 160, 200, 20)
     suit.Slider(scale_slider, 20, 180, 250, 20)
+
+    if suit.Button("Refresh", 20, 230, 250, 20).hit and created then
+    	getImageData(image_path)
+        createAnimation(image_data)
+    end
 end
 
 function love.draw()
 	if created then
+		love.graphics.print(err, 0, 0)
 		anim:draw(550 - vars.width * vars.scale / 2, 300 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
 	else
 		love.graphics.draw(drop, 500, 250)
 	end
 
 	love.graphics.setColor(20, 30, 45, 255)
-	love.graphics.rectangle('fill', 0, 0, 300, 800)
+	--love.graphics.rectangle('fill', 0, 0, 300, 800)
 	love.graphics.setColor(255, 255, 255, 255)
 
 	suit.draw()
-
 end
 
 function checkChange(dt)
@@ -76,7 +88,7 @@ function checkChange(dt)
 		if last_modtime == 0 then
 			last_modtime = modtime
 		elseif modtime > last_modtime or checkVars() then
-			createImage(image_data)
+			createAnimation(image_data)
 			last_modtime = modtime
 		end
 
@@ -85,26 +97,29 @@ function checkChange(dt)
 end
 
 function checkVars()
-	if vars.width ~= width_slider.value or vars.frame ~= frame_slider.value or vars.scale ~= scale_slider.value or vars.speed ~= speed_slider.value then
-		vars.width = width_slider.value
-		vars.frame = frame_slider.value
-		vars.scale = scale_slider.value
-		vars.speed = speed_slider.value
+	if vars.width ~= width_slider.value then vars.width = width_slider.value return true end
+	if vars.frame ~= frame_slider.value then vars.frame = frame_slider.value return true end
+	if vars.scale ~= scale_slider.value then vars.scale = scale_slider.value return true end
+	if vars.speed ~= speed_slider.value then vars.speed = speed_slider.value return true end
 
-		return true
-	else
-		return false
-	end
+	return false
 end
 
-function getImageData(dir)
-	local file = io.open(dir, "r")
-    image_data = love.image.newImageData(file)
-    file:close()
+function getImageData()
+	local file = io.open(image_path, 'rb')
+	file_data = file:read('*all')
+	file:close()
+
+	image_data = love.filesystem.newFile("outimage.png", "w")
+	image_data:write(file_data)
+	image_data:close()
+
+	image = love.graphics.newImage("outimage.png")
+	--love.filesystem.remove("outimage.png")
 end
 
-function createImage(i)
-    image = love.graphics.newImage(i)
+function createAnimation(img)
+    image = love.graphics.newImage(img)
 	anim  = newAnimation(image, vars.width, image:getHeight(), vars.speed, vars.frame)
 
 	created = true
@@ -112,16 +127,8 @@ end
 
 function love.filedropped(file)
 	file:open("r")
-	image_path = file:getFilename()
-    local imageData = love.image.newImageData(file)
-    file:close()
-    createImage(imageData)
-end
-
-function love.keypressed(key)
-	suit.keypressed(key)
-end
-
-function love.textinput(t)
-    suit.textinput(t)
+	file:close()
+	image_path = string.gsub(file:getFilename(), '\\', '/')
+    image_data = love.image.newImageData(file)
+    createAnimation(image_data)
 end
