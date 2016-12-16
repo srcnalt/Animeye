@@ -24,13 +24,12 @@ local speed_slider = {value = vars.speed, min = 0, max = 2}
 local scale_slider = {value = vars.scale, min = 0, max = 5}
 
 function love.load()
-	require 'Anim'
+	require 'anim8'
 
 	drop = love.graphics.newImage('drop.png')
 
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 	love.graphics.setBackgroundColor(65,77,108, 255)
-	love.window.setMode(800, 600, {fullscreen = false, centered = true})
 end
 
 function love.update(dt)
