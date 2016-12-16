@@ -30,6 +30,8 @@ function love.load()
 end
 
 function love.update(dt)
+	if dt > 0.1 then return end --stop update if window is being dragged
+
 	if created then
 		anim:update(dt)
 
