@@ -1,14 +1,14 @@
+lg = love.graphics
+
 local image_path = ""
 local image = {}
 local anim  = {}
-
-local speed = 0.1
-local scale = 2
 
 local created  = false
 
 local vars = {
 	width = 128,
+	height= 128,
 	frame = 4,
 	speed = 0.1,
 	scale = 1
@@ -16,6 +16,7 @@ local vars = {
 
 local suit   = require 'suit'
 local width_slider = {value = vars.width, min = 1, max = 256}
+local height_slider= {value = vars.width, min = 1, max = 256}
 local frame_slider = {value = vars.frame, min = 1, max = 32}
 local speed_slider = {value = vars.speed, min = 0, max = 1}
 local scale_slider = {value = vars.scale, min = 0, max = 5}
@@ -23,10 +24,18 @@ local scale_slider = {value = vars.scale, min = 0, max = 5}
 function love.load()
 	require 'Anim'
 
-	drop = love.graphics.newImage('drop.png')
+	lg.setDefaultFilter('nearest', 'nearest')
 
-	love.graphics.setDefaultFilter('nearest', 'nearest')
-	love.graphics.setBackgroundColor(65,77,108, 255)
+	drop  = love.graphics.newImage('drop.png')
+	
+	buttons = {
+		{color = {65,  77,  108}, normal = lg.newImage('buttons/button_1.png'), hover = lg.newImage('buttons/hover_1.png'), active = lg.newImage('buttons/active_1.png')},
+		{color = {207, 111, 14},  normal = lg.newImage('buttons/button_2.png'), hover = lg.newImage('buttons/hover_2.png'), active = lg.newImage('buttons/active_2.png')},
+		{color = {69,  152, 94},  normal = lg.newImage('buttons/button_3.png'), hover = lg.newImage('buttons/hover_3.png'), active = lg.newImage('buttons/active_3.png')},
+		{color = {199, 46,  18},  normal = lg.newImage('buttons/button_4.png'), hover = lg.newImage('buttons/hover_4.png'), active = lg.newImage('buttons/active_4.png')}
+	}
+
+	lg.setBackgroundColor(buttons[1].color)
 end
 
 function love.update(dt)
@@ -40,33 +49,67 @@ function love.update(dt)
 		end
 	end
 
-    suit.Label("Frame width: " .. math.floor(width_slider.value), {align = "left"}, 20, 10, 200, 20)
-    suit.Slider(width_slider, 20, 30, 250, 20)
+	suit.layout:reset(10,10)
+    suit.layout:padding(0,5)
 
-    suit.Label("Frame count: " .. math.floor(frame_slider.value), {align = "left"}, 20, 60, 200, 20)
-    suit.Slider(frame_slider, 20, 80, 250, 20)
+    suit.Label("Frame width: " .. math.floor(width_slider.value), {align = "left"}, suit.layout:row(250, 20))
+    suit.Slider(width_slider, suit.layout:row(250, 20))
 
-    suit.Label("Animation speed: " .. math.floor(speed_slider.value * 100) * 0.01, {align = "left"}, 20, 110, 200, 20)
-    suit.Slider(speed_slider, 20, 130, 250, 20)
+    suit.layout:row(0, 5)
 
-    suit.Label("Scale factor: " .. math.floor(scale_slider.value * 10) * 0.1, {align = "left"}, 20, 160, 200, 20)
-    suit.Slider(scale_slider, 20, 180, 250, 20)
+    suit.Label("Frame height: " .. math.floor(height_slider.value), {align = "left"}, suit.layout:row(250, 20))
+    suit.Slider(height_slider, suit.layout:row(250, 20))
 
-    if suit.Button("Refresh", 20, 230, 250, 20).hit and created then
+    suit.layout:row(0, 5)
+
+    suit.Label("Frame count: " .. math.floor(frame_slider.value), {align = "left"}, suit.layout:row(250, 20))
+    suit.Slider(frame_slider, suit.layout:row(250, 20))
+
+    suit.layout:row(0, 5)
+
+    suit.Label("Animation speed: " .. math.floor(speed_slider.value * 100) * 0.01, {align = "left"}, suit.layout:row(250, 20))
+    suit.Slider(speed_slider, suit.layout:row(250, 20))
+
+    suit.layout:row(0, 5)
+
+    suit.Label("Scale factor: " .. math.floor(scale_slider.value * 10) * 0.1, {align = "left"}, suit.layout:row(250, 20))
+    suit.Slider(scale_slider, suit.layout:row(250, 20))
+
+	suit.layout:row(0, 15)
+
+    if suit.Button("Refresh", suit.layout:row(250, 20)).hit and created then
     	getImageData(image_path)
         createAnimation(image_data)
+    end
+
+    suit.layout:row(0, 15)
+
+    if suit.ImageButton(buttons[1].normal, {hovered = buttons[1].hover, active = buttons[1].active}, suit.layout:row(66, 20)).hit then
+    	love.graphics.setBackgroundColor(buttons[1].color)
+    end
+
+    if suit.ImageButton(buttons[2].normal, {hovered = buttons[2].hover, active = buttons[2].active}, suit.layout:col(66, 20)).hit then
+    	love.graphics.setBackgroundColor(buttons[2].color)
+    end
+
+    if suit.ImageButton(buttons[3].normal, {hovered = buttons[3].hover, active = buttons[3].active}, suit.layout:col(66, 20)).hit then
+    	love.graphics.setBackgroundColor(buttons[3].color)
+    end
+
+    if suit.ImageButton(buttons[4].normal, {hovered = buttons[4].hover, active = buttons[4].active}, suit.layout:col(66, 20)).hit then
+    	love.graphics.setBackgroundColor(buttons[4].color)
     end
 end
 
 function love.draw()
 	if created then
-		anim:draw((love.graphics.getWidth() - 300) / 2 + 300 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
+		anim:draw((love.graphics.getWidth() - 270) / 2 + 270 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
 	else
-		love.graphics.draw(drop, (love.graphics.getWidth() - 300) / 2 + 250, love.graphics.getHeight() / 2 - 50)
+		love.graphics.draw(drop, (love.graphics.getWidth() - 270) / 2 + 220, love.graphics.getHeight() / 2 - 50)
 	end
 
 	love.graphics.setColor(20, 30, 45, 255)
-	love.graphics.rectangle('fill', 0, 0, 300, love.graphics.getHeight())
+	love.graphics.rectangle('fill', 0, 0, 270, love.graphics.getHeight())
 	love.graphics.setColor(255, 255, 255, 255)
 
 	suit.draw()

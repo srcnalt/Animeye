@@ -3,6 +3,6 @@ function love.conf(t)
     t.window.title      = "Animeye"
     t.window.icon       = "icon.png"
     t.window.resizable  = true
-    t.window.minwidth   = 800
-    t.window.minheight  = 600
+    t.window.minwidth   = 600
+    t.window.minheight  = 400
 end
