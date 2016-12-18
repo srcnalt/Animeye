@@ -22,7 +22,7 @@ local speed_slider = {value = vars.speed, min = 0, max = 1}
 local scale_slider = {value = vars.scale, min = 0, max = 5}
 
 function love.load()
-	require 'Anim'
+	require 'anim'
 
 	lg.setDefaultFilter('nearest', 'nearest')
 
