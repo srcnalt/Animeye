@@ -12,10 +12,11 @@ function newAnimation(image, fw, fh, delay, frames)
 	a.fh = fh
 	a.playing = true
 	a.speed = 1
-	a.mode = 1
 	a.direction = 1
+
 	local imgw = image:getWidth()
 	local imgh = image:getHeight()
+	
 	if frames == 0 then
 		frames = imgw / fw * imgh / fh
 	end
