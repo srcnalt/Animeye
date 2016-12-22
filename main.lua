@@ -2,27 +2,25 @@ lg = love.graphics
 
 local image_path = ""
 local image = {}
-local anim  = {}
+local anims = {}
 
 local created  = false
 
 local vars = {
 	width = 128,
 	height= 128,
-	frame = 4,
-	speed = 0.01,
+	speed = 0.2,
 	scale = 1
 }
 
 local suit   = require 'suit'
 local width_slider = {value = vars.width,  min = 1, max = 256}
 local height_slider= {value = vars.height, min = 1, max = 256}
-local frame_slider = {value = vars.frame,  min = 1, max = 32}
 local speed_slider = {value = vars.speed,  min = 0, max = 1}
 local scale_slider = {value = vars.scale,  min = 0, max = 5}
 
 function love.load()
-	require 'animx'
+	require 'anim'
 
 	lg.setDefaultFilter('nearest', 'nearest')
 
@@ -42,7 +40,7 @@ function love.update(dt)
 	if dt > 0.1 then return end --stop update if window is being dragged
 
 	if created then
-		anim:update(dt)
+		anims:update(dt)
 
 		if checkVars() then
 			createAnimation(image_data)
@@ -59,11 +57,6 @@ function love.update(dt)
 
     suit.Label("Frame height: " .. math.floor(height_slider.value), {align = "left"}, suit.layout:row(250, 20))
     suit.Slider(height_slider, suit.layout:row(250, 20))
-
-    suit.layout:row(0, 5)
-
-    suit.Label("Frame count: " .. math.floor(frame_slider.value), {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(frame_slider, suit.layout:row(250, 20))
 
     suit.layout:row(0, 5)
 
@@ -103,7 +96,7 @@ end
 
 function love.draw()
 	if created then
-		anim:draw((love.graphics.getWidth() - 270) / 2 + 270 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - image:getHeight() * vars.scale / 2, 0, vars.scale, vars.scale)
+		anims:draw((love.graphics.getWidth() - 270) / 2 + 270 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - vars.height * vars.scale / 2, 0, vars.scale, vars.scale)
 	else
 		love.graphics.draw(drop, (love.graphics.getWidth() - 270) / 2 + 220, love.graphics.getHeight() / 2 - 50)
 	end
@@ -118,7 +111,6 @@ end
 function checkVars()
 	if vars.width  ~= width_slider.value  then vars.width  = width_slider.value  return true end
 	if vars.height ~= height_slider.value then vars.height = height_slider.value return true end
-	if vars.frame  ~= frame_slider.value  then vars.frame  = frame_slider.value  return true end
 	if vars.scale  ~= scale_slider.value  then vars.scale  = scale_slider.value  return true end
 	if vars.speed  ~= speed_slider.value  then vars.speed  = speed_slider.value  return true end
 
@@ -139,7 +131,7 @@ end
 
 function createAnimation(img)
     image = love.graphics.newImage(img)
-	anim  = animx.new(image, vars.width, vars.height, vars.speed)
+	anims = anim.new(image, vars.width, vars.height, vars.speed)
 
 	created = true
 end
