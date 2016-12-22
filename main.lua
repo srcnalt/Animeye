@@ -9,13 +9,17 @@ local created  = false
 local vars = {
 	width = 128,
 	height= 128,
+	frame = 1,
 	speed = 0.2,
 	scale = 1
 }
 
+local input = {text = '1'}
+
 local suit   = require 'suit'
 local width_slider = {value = vars.width,  min = 1, max = 256}
 local height_slider= {value = vars.height, min = 1, max = 256}
+local frame_slider = {value = vars.frame,  min = 1, max = 64}
 local speed_slider = {value = vars.speed,  min = 0, max = 1}
 local scale_slider = {value = vars.scale,  min = 0, max = 5}
 
@@ -42,7 +46,7 @@ function love.update(dt)
 	if created then
 		anims:update(dt)
 
-		if checkVars() then
+		if checkVars() and not anims.stop then
 			createAnimation(image_data)
 		end
 	end
@@ -56,7 +60,25 @@ function love.update(dt)
     suit.layout:row(0, 5)
 
     suit.Label("Frame height: " .. math.floor(height_slider.value), {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(height_slider, suit.layout:row(250, 20))
+    suit.Slider(height_slider, {align = "left"}, suit.layout:row(250, 20))
+
+    suit.layout:row(0, 5)
+
+    suit.Label("Go to frame: " .. input.text, {align = "left"}, suit.layout:row(250, 20))
+    if suit.Input(input, suit.layout:row(120, 20)).submitted then
+    	anims.stop = true
+    	anims.pos  = tonumber(input.text)
+    end
+
+    suit.layout:col(10, 0)
+
+    if suit.Button("Play", suit.layout:col(120, 20)).hit and created then
+    	getImageData(image_path)
+        createAnimation(image_data)
+    end
+
+    suit.layout._x = 10
+    suit.Slider(frame_slider, {align = "left"}, suit.layout:row(250, 20))
 
     suit.layout:row(0, 5)
 
@@ -113,6 +135,7 @@ function checkVars()
 	if vars.height ~= height_slider.value then vars.height = height_slider.value return true end
 	if vars.scale  ~= scale_slider.value  then vars.scale  = scale_slider.value  return true end
 	if vars.speed  ~= speed_slider.value  then vars.speed  = speed_slider.value  return true end
+	if vars.frame  ~= frame_slider.value  then vars.frame  = math.floor(frame_slider.value)  return true end
 
 	return false
 end
@@ -132,6 +155,8 @@ end
 function createAnimation(img)
     image = love.graphics.newImage(img)
 	anims = anim.new(image, vars.width, vars.height, vars.speed)
+	frame_slider.max   = anims.count
+	frame_slider.value = 1
 
 	created = true
 end
@@ -142,4 +167,12 @@ function love.filedropped(file)
 	image_path = string.gsub(file:getFilename(), '\\', '/')
     image_data = love.image.newImageData(file)
     createAnimation(image_data)
+end
+
+function love.textinput(t)
+    suit.textinput(t)
+end
+
+function love.keypressed(key)
+    suit.keypressed(key)
 end

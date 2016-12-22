@@ -14,6 +14,8 @@ function anim.new(img, fw, fh, speed)
 	self.pos 	= 1
 	self.time   = 0
  	self.frames = {}
+ 	self.count  = col * row
+ 	self.stop   = false
 
 	for i = 0, row - 1, 1 do
 		for j = 0, col - 1, 1 do
@@ -29,6 +31,8 @@ function anim:draw(...)
 end
 
 function anim:update(dt)
+	if self.stop then return end
+
 	self.time = self.time + dt
 
 	if self.time > self.speed then
