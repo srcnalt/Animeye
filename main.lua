@@ -10,19 +10,19 @@ local vars = {
 	width = 128,
 	height= 128,
 	frame = 4,
-	speed = 0.1,
+	speed = 0.01,
 	scale = 1
 }
 
 local suit   = require 'suit'
-local width_slider = {value = vars.width, min = 1, max = 256}
-local height_slider= {value = vars.width, min = 1, max = 256}
-local frame_slider = {value = vars.frame, min = 1, max = 32}
-local speed_slider = {value = vars.speed, min = 0, max = 1}
-local scale_slider = {value = vars.scale, min = 0, max = 5}
+local width_slider = {value = vars.width,  min = 1, max = 256}
+local height_slider= {value = vars.height, min = 1, max = 256}
+local frame_slider = {value = vars.frame,  min = 1, max = 32}
+local speed_slider = {value = vars.speed,  min = 0, max = 1}
+local scale_slider = {value = vars.scale,  min = 0, max = 5}
 
 function love.load()
-	require 'anim'
+	require 'animx'
 
 	lg.setDefaultFilter('nearest', 'nearest')
 
@@ -116,10 +116,11 @@ function love.draw()
 end
 
 function checkVars()
-	if vars.width ~= width_slider.value then vars.width = width_slider.value return true end
-	if vars.frame ~= frame_slider.value then vars.frame = frame_slider.value return true end
-	if vars.scale ~= scale_slider.value then vars.scale = scale_slider.value return true end
-	if vars.speed ~= speed_slider.value then vars.speed = speed_slider.value return true end
+	if vars.width  ~= width_slider.value  then vars.width  = width_slider.value  return true end
+	if vars.height ~= height_slider.value then vars.height = height_slider.value return true end
+	if vars.frame  ~= frame_slider.value  then vars.frame  = frame_slider.value  return true end
+	if vars.scale  ~= scale_slider.value  then vars.scale  = scale_slider.value  return true end
+	if vars.speed  ~= speed_slider.value  then vars.speed  = speed_slider.value  return true end
 
 	return false
 end
@@ -138,7 +139,7 @@ end
 
 function createAnimation(img)
     image = love.graphics.newImage(img)
-	anim  = newAnimation(image, vars.width, image:getHeight(), vars.speed, vars.frame)
+	anim  = animx.new(image, vars.width, vars.height, vars.speed)
 
 	created = true
 end
