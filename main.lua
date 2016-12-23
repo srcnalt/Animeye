@@ -73,12 +73,16 @@ function love.update(dt)
     suit.layout:col(10, 0)
 
     if suit.Button("Play", suit.layout:col(120, 20)).hit and created then
-    	getImageData(image_path)
-        createAnimation(image_data)
+    	anims.stop = false
     end
 
     suit.layout._x = 10
-    suit.Slider(frame_slider, {align = "left"}, suit.layout:row(250, 20))
+
+    if suit.Slider(frame_slider, {align = "left"}, suit.layout:row(250, 20)).changed then
+    	input.text = tostring(vars.frame)
+    	anims.pos  = tonumber(input.text)
+    	anims.stop = true
+    end
 
     suit.layout:row(0, 5)
 
@@ -135,7 +139,7 @@ function checkVars()
 	if vars.height ~= height_slider.value then vars.height = height_slider.value return true end
 	if vars.scale  ~= scale_slider.value  then vars.scale  = scale_slider.value  return true end
 	if vars.speed  ~= speed_slider.value  then vars.speed  = speed_slider.value  return true end
-	if vars.frame  ~= frame_slider.value  then vars.frame  = math.floor(frame_slider.value)  return true end
+	if vars.frame  ~= frame_slider.value  then vars.frame  = math.floor(frame_slider.value)  end
 
 	return false
 end
@@ -155,7 +159,8 @@ end
 function createAnimation(img)
     image = love.graphics.newImage(img)
 	anims = anim.new(image, vars.width, vars.height, vars.speed)
-	frame_slider.max   = anims.count
+	
+	frame_slider.max   = anims.count + 0.9
 	frame_slider.value = 1
 
 	created = true
