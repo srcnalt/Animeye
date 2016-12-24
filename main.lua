@@ -6,22 +6,14 @@ local anims = {}
 
 local created  = false
 
-local vars = {
-	width = 128,
-	height= 128,
-	frame = 1,
-	speed = 0.2,
-	scale = 1
-}
-
 local input = {text = '1'}
 
 local suit   = require 'suit'
-local width_slider = {value = vars.width,  min = 1, max = 256}
-local height_slider= {value = vars.height, min = 1, max = 256}
-local frame_slider = {value = vars.frame,  min = 1, max = 64}
-local speed_slider = {value = vars.speed,  min = 0, max = 1}
-local scale_slider = {value = vars.scale,  min = 0, max = 5}
+local width  = {value = 128, min = 1, max = 256}
+local height = {value = 128, min = 1, max = 256}
+local frame  = {value = 1,   min = 1, max = 64}
+local speed  = {value = 0.2, min = 0, max = 1}
+local scale  = {value = 1,   min = 0, max = 5}
 
 function love.load()
 	require 'anim'
@@ -45,29 +37,30 @@ function love.update(dt)
 
 	if created then
 		anims:update(dt)
-
-		if checkVars() and not anims.stop then
-			createAnimation(image_data)
-		end
 	end
 
 	suit.layout:reset(10,10)
     suit.layout:padding(0,5)
 
-    suit.Label("Frame width: " .. math.floor(width_slider.value), {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(width_slider, suit.layout:row(250, 20))
+    suit.Label("Frame width: " .. math.floor(width.value), {align = "left"}, suit.layout:row(250, 20))
+    if suit.Slider(width, suit.layout:row(250, 20)).changed then
+    	anims:reload(math.floor(width.value), math.floor(height.value))
+    end
 
     suit.layout:row(0, 5)
 
-    suit.Label("Frame height: " .. math.floor(height_slider.value), {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(height_slider, {align = "left"}, suit.layout:row(250, 20))
+    suit.Label("Frame height: " .. math.floor(height.value), {align = "left"}, suit.layout:row(250, 20))
+    if suit.Slider(height, {align = "left"}, suit.layout:row(250, 20)).changed then
+		anims:reload(math.floor(width.value), math.floor(height.value))
+    end
 
     suit.layout:row(0, 5)
 
     suit.Label("Go to frame: " .. input.text, {align = "left"}, suit.layout:row(250, 20))
     if suit.Input(input, suit.layout:row(120, 20)).submitted then
-    	anims.stop = true
-    	anims.pos  = tonumber(input.text)
+    	anims.stop  = true
+    	anims.pos   = tonumber(input.text)
+    	frame.value = tonumber(input.text)
     end
 
     suit.layout:col(10, 0)
@@ -78,21 +71,25 @@ function love.update(dt)
 
     suit.layout._x = 10
 
-    if suit.Slider(frame_slider, {align = "left"}, suit.layout:row(250, 20)).changed then
-    	input.text = tostring(vars.frame)
-    	anims.pos  = tonumber(input.text)
+    if suit.Slider(frame, {align = "left"}, suit.layout:row(250, 20)).changed then
     	anims.stop = true
+    	input.text = tostring(math.floor(frame.value))
+    	anims.pos  = tonumber(input.text)
     end
 
     suit.layout:row(0, 5)
 
-    suit.Label("Animation speed: " .. math.floor(speed_slider.value * 100) * 0.01, {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(speed_slider, suit.layout:row(250, 20))
+    suit.Label("Animation speed: " .. math.floor(speed.value * 100) * 0.01, {align = "left"}, suit.layout:row(250, 20))
+    if suit.Slider(speed, suit.layout:row(250, 20)).changed then
+    	anims.speed = math.floor(speed.value * 100) * 0.01
+    end
 
     suit.layout:row(0, 5)
 
-    suit.Label("Scale factor: " .. math.floor(scale_slider.value * 10) * 0.1, {align = "left"}, suit.layout:row(250, 20))
-    suit.Slider(scale_slider, suit.layout:row(250, 20))
+    suit.Label("Scale factor: " .. math.floor(scale.value * 10) * 0.1, {align = "left"}, suit.layout:row(250, 20))
+    if suit.Slider(scale, suit.layout:row(250, 20)).changed then
+    	scale.value = math.floor(scale.value * 10) * 0.1
+    end
 
 	suit.layout:row(0, 15)
 
@@ -122,7 +119,7 @@ end
 
 function love.draw()
 	if created then
-		anims:draw((love.graphics.getWidth() - 270) / 2 + 270 - vars.width * vars.scale / 2, love.graphics.getHeight() / 2 - vars.height * vars.scale / 2, 0, vars.scale, vars.scale)
+		anims:draw((love.graphics.getWidth() - 270) / 2 + 270 - width.value * scale.value / 2, love.graphics.getHeight() / 2 - height.value * scale.value / 2, 0, scale.value, scale.value)
 	else
 		love.graphics.draw(drop, (love.graphics.getWidth() - 270) / 2 + 220, love.graphics.getHeight() / 2 - 50)
 	end
@@ -132,16 +129,6 @@ function love.draw()
 	love.graphics.setColor(255, 255, 255, 255)
 
 	suit.draw()
-end
-
-function checkVars()
-	if vars.width  ~= width_slider.value  then vars.width  = width_slider.value  return true end
-	if vars.height ~= height_slider.value then vars.height = height_slider.value return true end
-	if vars.scale  ~= scale_slider.value  then vars.scale  = scale_slider.value  return true end
-	if vars.speed  ~= speed_slider.value  then vars.speed  = speed_slider.value  return true end
-	if vars.frame  ~= frame_slider.value  then vars.frame  = math.floor(frame_slider.value)  end
-
-	return false
 end
 
 function getImageData()
@@ -158,10 +145,10 @@ end
 
 function createAnimation(img)
     image = love.graphics.newImage(img)
-	anims = anim.new(image, vars.width, vars.height, vars.speed)
+	anims = anim.new(image, width.value, height.value, speed.value)
 	
-	frame_slider.max   = anims.count + 0.9
-	frame_slider.value = 1
+	frame.max   = anims.count + 0.9
+	frame.value = 1
 
 	created = true
 end
