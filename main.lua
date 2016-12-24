@@ -58,9 +58,16 @@ function love.update(dt)
 
     suit.Label("Go to frame: " .. input.text, {align = "left"}, suit.layout:row(250, 20))
     if suit.Input(input, suit.layout:row(120, 20)).submitted then
+    	local n = tonumber(input.text)
+
+    	if n > anims.count then
+    		n = anims.count
+    		input.text = tostring(n)
+    	end
+
     	anims.stop  = true
-    	anims.pos   = tonumber(input.text)
-    	frame.value = tonumber(input.text)
+    	anims.pos   = n
+    	frame.value = n
     end
 
     suit.layout:col(10, 0)
