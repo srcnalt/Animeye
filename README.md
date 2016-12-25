@@ -2,7 +2,6 @@
 [![Version](https://img.shields.io/badge/version-0.2-blue.svg)](https://github.com/srcnalt/Animeye/tree/master/Build)
 [![LOVE](https://img.shields.io/badge/L%C3%96VE-0.10.2-ff69b4.svg)](http://love2d.org/)
 [![License](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE.md)
-[![Build Status](https://travis-ci.org/srcnalt/Animeye.svg)](https://travis-ci.org/srcnalt/Animeye)
 
 Animeye is a sprite animation viewer for 2D artists.
 
