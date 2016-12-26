@@ -3,6 +3,6 @@
 [![LOVE](https://img.shields.io/badge/L%C3%96VE-0.10.2-ff69b4.svg)](http://love2d.org/)
 [![License](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE.md)
 
-Animeye is a sprite animation viewer for 2D artists.
+Animeye is a sprite animation viewer for 2D artists, made in LÖVE2D.
 
-![alt text] (https://raw.githubusercontent.com/srcnalt/Animeye/master/howto.gif)
+![alt text](https://raw.githubusercontent.com/srcnalt/Animeye/master/howto.gif)
