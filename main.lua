@@ -43,7 +43,7 @@ function love.update(dt)
     suit.layout:padding(0,5)
 
     suit.Label("Frame width: " .. math.floor(width.value), {align = "left"}, suit.layout:row(250, 20))
-    if suit.Slider(width, suit.layout:row(250, 20)).changed then
+    if suit.Slider(width, {align = "left"}, suit.layout:row(250, 20)).changed and created then
     	anims:reload(math.floor(width.value), math.floor(height.value))
         frame.max = anims.count + 0.9
     end
@@ -51,7 +51,7 @@ function love.update(dt)
     suit.layout:row(0, 5)
 
     suit.Label("Frame height: " .. math.floor(height.value), {align = "left"}, suit.layout:row(250, 20))
-    if suit.Slider(height, {align = "left"}, suit.layout:row(250, 20)).changed then
+    if suit.Slider(height, {align = "left"}, suit.layout:row(250, 20)).changed and created then
 		anims:reload(math.floor(width.value), math.floor(height.value))
         frame.max = anims.count + 0.9
     end
