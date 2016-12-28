@@ -28,6 +28,9 @@ function anim.new(img, fw, fh, speed)
 end
 
 function anim:draw(...)
+	--TODO: Rause error here when error console implemented
+	if self.pos < #self.frames then return end
+
 	love.graphics.draw(self.img, self.frames[self.pos], ...)
 end
 
