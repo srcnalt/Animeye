@@ -15,6 +15,8 @@ local frame  = {value = 1,   min = 1, max = 64}
 local speed  = {value = 0.2, min = 0, max = 1}
 local scale  = {value = 1,   min = 0, max = 5}
 
+local dock_width = 270
+
 function love.load()
 	require 'anim'
 
@@ -58,8 +60,8 @@ function love.update(dt)
 
     suit.layout:row(0, 5)
 
-    suit.Label("Go to frame: " .. input.text, {align = "left"}, suit.layout:row(250, 20))
-    if suit.Input(input, suit.layout:row(120, 20)).submitted then
+    suit.Label("Go to frame: ", {align = "left"}, suit.layout:row(120, 20))
+    if suit.Input(input, suit.layout:col(60, 20)).submitted then
     	local n = tonumber(input.text)
 
     	if n > anims.count then
@@ -74,7 +76,7 @@ function love.update(dt)
 
     suit.layout:col(10, 0)
 
-    if suit.Button("Play", suit.layout:col(120, 20)).hit and created then
+    if suit.Button("Play", suit.layout:col(60, 20)).hit and created then
     	anims.stop = false
     end
 
@@ -128,13 +130,13 @@ end
 
 function love.draw()
 	if created then
-		anims:draw((love.graphics.getWidth() - 270) / 2 + 270 - width.value * scale.value / 2, love.graphics.getHeight() / 2 - height.value * scale.value / 2, 0, scale.value, scale.value)
+		anims:draw((love.graphics.getWidth() - dock_width) / 2 + dock_width - width.value * scale.value / 2, love.graphics.getHeight() / 2 - height.value * scale.value / 2, 0, scale.value, scale.value)
 	else
-		love.graphics.draw(drop, (love.graphics.getWidth() - 270) / 2 + 220, love.graphics.getHeight() / 2 - 50)
+		love.graphics.draw(drop, (love.graphics.getWidth() - dock_width) / 2 + 220, love.graphics.getHeight() / 2 - 50)
 	end
 
 	love.graphics.setColor(20, 30, 45, 255)
-	love.graphics.rectangle('fill', 0, 0, 270, love.graphics.getHeight())
+	love.graphics.rectangle('fill', 0, 0, dock_width, love.graphics.getHeight())
 	love.graphics.setColor(255, 255, 255, 255)
 
 	suit.draw()
