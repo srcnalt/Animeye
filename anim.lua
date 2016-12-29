@@ -52,7 +52,7 @@ end
 
 function anim:reload(fw, fh)
 	--TODO: Raise error here when console implemented
-	if fw > self.iw or fh > self.ih then return
+	if fw > self.iw or fh > self.ih then return end
 
 	local col   = math.ceil(self.iw / fw)
 	local row   = math.ceil(self.ih / fh)
