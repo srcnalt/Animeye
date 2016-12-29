@@ -28,7 +28,7 @@ function anim.new(img, fw, fh, speed)
 end
 
 function anim:draw(...)
-	--TODO: Rause error here when error console implemented
+	--TODO: Raise error here when error console implemented
 	if self.pos < #self.frames then return end
 
 	love.graphics.draw(self.img, self.frames[self.pos], ...)
@@ -51,6 +51,9 @@ function anim:update(dt)
 end
 
 function anim:reload(fw, fh)
+	--TODO: Raise error here when console implemented
+	if fw > self.iw or fh > self.ih then return
+
 	local col   = math.ceil(self.iw / fw)
 	local row   = math.ceil(self.ih / fh)
 
