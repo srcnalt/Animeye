@@ -29,7 +29,7 @@ end
 
 function anim:draw(...)
 	--TODO: Raise error here when error console implemented
-	if self.pos < #self.frames then return end
+	if self.pos > #self.frames then return end
 
 	love.graphics.draw(self.img, self.frames[self.pos], ...)
 end
