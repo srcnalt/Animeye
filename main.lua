@@ -51,7 +51,13 @@ function love.update(dt)
     suit.Label("Frame width: ", {align = "left"}, suit.layout:row(120, 20))
 
     if suit.Input(input_width, suit.layout:col(130, 20)).submitted then
-        width.value = tonumber(input_width.text)
+        n = tonumber(input_width.text)
+
+        --TODO: Add error message for this
+        --also should be moved into a function for max and minus check
+        if n > width.max then return end
+
+        width.value = n
 
         --TODO: move this into a method (1)
         if created then
@@ -78,7 +84,12 @@ function love.update(dt)
     suit.Label("Frame height: ", {align = "left"}, suit.layout:row(120, 20))
 
     if suit.Input(input_height, suit.layout:col(130, 20)).submitted then
-        height.value = tonumber(input_height.text)
+        n = tonumber(input_height.text)
+
+        --TODO: Add error message for this
+        if n > height.max then return end
+
+        height.value = n
 
         --TODO: move this into a method (3)
         if created then
@@ -105,7 +116,10 @@ function love.update(dt)
     suit.Label("Go to frame: ", {align = "left"}, suit.layout:row(120, 20))
 
     if suit.Input(input_frame, suit.layout:col(60, 20)).submitted then
-        local n = tonumber(input_frame.text)
+        n = tonumber(input_frame.text)
+
+        --TODO: Add error message for this
+        if n > frame.max then return end
 
         if n > anims.count then
             n = anims.count
@@ -136,7 +150,12 @@ function love.update(dt)
     suit.Label("Animation speed: ", {align = "left"}, suit.layout:row(120, 20))
     
     if suit.Input(input_speed, suit.layout:col(130, 20)).submitted then
-        speed.value = tonumber(input_speed.text)
+        n = tonumber(input_speed.text)
+
+        --TODO: Add error message for this
+        if n > speed.max then return end
+
+        speed.value = n
     end
 
     suit.layout._x = 10
@@ -151,7 +170,13 @@ function love.update(dt)
     suit.Label("Scale factor: ", {align = "left"}, suit.layout:row(120, 20))
     
     if suit.Input(input_scale, suit.layout:col(130, 20)).submitted then
-        scale.value = tonumber(input_scale.text)
+        n = tonumber(input_scale.text)
+
+        --TODO: Add error message for this
+        if n > scale.max then return end
+
+        scale.value = n
+
     end
 
     suit.layout._x = 10
@@ -219,6 +244,7 @@ function createAnimation(img)
     
     frame.max   = anims.count + 0.9
     frame.value = 1
+    input_frame.text = '1'
 
     created = true
 end
