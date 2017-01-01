@@ -55,7 +55,10 @@ function love.update(dt)
 
         --TODO: Add error message for this
         --also should be moved into a function for max and minus check
-        if n > width.max then return end
+        if n > width.max then
+            input_width.text = tostring(math.floor(width.value))
+            return
+        end
 
         width.value = n
 
@@ -87,7 +90,10 @@ function love.update(dt)
         n = tonumber(input_height.text)
 
         --TODO: Add error message for this
-        if n > height.max then return end
+        if n > height.max then
+            input_height.text = tostring(math.floor(height.value))
+            return
+        end
 
         height.value = n
 
@@ -119,7 +125,10 @@ function love.update(dt)
         n = tonumber(input_frame.text)
 
         --TODO: Add error message for this
-        if n > frame.max then return end
+        if n > frame.max then
+            input_frame.text = tostring(math.floor(frame.value))
+            return
+        end
 
         if n > anims.count then
             n = anims.count
@@ -153,7 +162,10 @@ function love.update(dt)
         n = tonumber(input_speed.text)
 
         --TODO: Add error message for this
-        if n > speed.max then return end
+        if n > speed.max then
+            input_speed.text = tostring(math.floor(speed.value))
+            return
+        end
 
         speed.value = n
     end
@@ -173,7 +185,10 @@ function love.update(dt)
         n = tonumber(input_scale.text)
 
         --TODO: Add error message for this
-        if n > scale.max then return end
+        if n > scale.max then
+            input_scale.text = tostring(math.floor(scale.value))
+            return
+        end
 
         scale.value = n
 
