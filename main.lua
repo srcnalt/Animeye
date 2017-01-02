@@ -26,13 +26,13 @@ function love.load()
 
     lg.setDefaultFilter('nearest', 'nearest')
 
-    drop  = love.graphics.newImage('drop.png')
+    drop  = love.graphics.newImage('img/icons/drop.png')
     
     buttons = {
-        {color = {65,  77,  108}, normal = lg.newImage('buttons/button_1.png'), hover = lg.newImage('buttons/hover_1.png'), active = lg.newImage('buttons/active_1.png')},
-        {color = {207, 111, 14},  normal = lg.newImage('buttons/button_2.png'), hover = lg.newImage('buttons/hover_2.png'), active = lg.newImage('buttons/active_2.png')},
-        {color = {69,  152, 94},  normal = lg.newImage('buttons/button_3.png'), hover = lg.newImage('buttons/hover_3.png'), active = lg.newImage('buttons/active_3.png')},
-        {color = {199, 46,  18},  normal = lg.newImage('buttons/button_4.png'), hover = lg.newImage('buttons/hover_4.png'), active = lg.newImage('buttons/active_4.png')}
+        {color = {65,  77,  108}, normal = lg.newImage('img/buttons/button_1.png'), hover = lg.newImage('img/buttons/hover_1.png'), active = lg.newImage('img/buttons/active_1.png')},
+        {color = {207, 111, 14},  normal = lg.newImage('img/buttons/button_2.png'), hover = lg.newImage('img/buttons/hover_2.png'), active = lg.newImage('img/buttons/active_2.png')},
+        {color = {69,  152, 94},  normal = lg.newImage('img/buttons/button_3.png'), hover = lg.newImage('img/buttons/hover_3.png'), active = lg.newImage('img/buttons/active_3.png')},
+        {color = {199, 46,  18},  normal = lg.newImage('img/buttons/button_4.png'), hover = lg.newImage('img/buttons/hover_4.png'), active = lg.newImage('img/buttons/active_4.png')}
     }
 
     lg.setBackgroundColor(buttons[1].color)

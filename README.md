@@ -5,4 +5,4 @@
 
 Animeye is a sprite animation viewer for 2D artists, made in LÖVE2D.
 
-![alt text](https://raw.githubusercontent.com/srcnalt/Animeye/master/howto.gif)
+![alt text](https://raw.githubusercontent.com/srcnalt/Animeye/master/img/doc/howto.gif)
