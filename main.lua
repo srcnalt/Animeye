@@ -13,6 +13,7 @@ local input_speed  = {text = '0.2'}
 local input_scale  = {text = '1'}
 
 local suit   = require 'suit'
+
 local width  = {value = 128, min = 1, max = 256}
 local height = {value = 128, min = 1, max = 256}
 local frame  = {value = 1,   min = 1, max = 64}
@@ -23,6 +24,7 @@ local dock_width = 270
 
 function love.load()
     require 'anim'
+    require 'disp'
 
     lg.setDefaultFilter('nearest', 'nearest')
 
@@ -209,22 +211,12 @@ function love.update(dt)
     end
 
     suit.layout:row(0, 15)
+    suit.layout:row(0, 15)
 
-    if suit.ImageButton(buttons[1].normal, {hovered = buttons[1].hover, active = buttons[1].active}, suit.layout:row(66, 20)).hit then
-        love.graphics.setBackgroundColor(buttons[1].color)
-    end
-
-    if suit.ImageButton(buttons[2].normal, {hovered = buttons[2].hover, active = buttons[2].active}, suit.layout:col(66, 20)).hit then
-        love.graphics.setBackgroundColor(buttons[2].color)
-    end
-
-    if suit.ImageButton(buttons[3].normal, {hovered = buttons[3].hover, active = buttons[3].active}, suit.layout:col(66, 20)).hit then
-        love.graphics.setBackgroundColor(buttons[3].color)
-    end
-
-    if suit.ImageButton(buttons[4].normal, {hovered = buttons[4].hover, active = buttons[4].active}, suit.layout:col(66, 20)).hit then
-        love.graphics.setBackgroundColor(buttons[4].color)
-    end
+    changeBackgroundColor(buttons[1], suit)
+    changeBackgroundColor(buttons[2], suit)
+    changeBackgroundColor(buttons[3], suit)
+    changeBackgroundColor(buttons[4], suit)
 end
 
 function love.draw()
