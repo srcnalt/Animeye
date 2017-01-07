@@ -191,3 +191,29 @@ function displayRefreshTool()
 
     suit.layout:row(0, 5)
 end
+
+function drawDock()
+	love.graphics.setColor(20, 30, 45, 255)
+    love.graphics.rectangle('fill', 0, 0, dock_width, love.graphics.getHeight())
+    love.graphics.setColor(255, 255, 255, 255)
+end
+
+function drawConsole()
+	love.graphics.setColor(140, 140, 140, 255)
+    love.graphics.rectangle('fill', dock_width, love.graphics.getHeight() - cli_height, love.graphics.getWidth() - dock_width, cli_height)
+    love.graphics.setColor(255, 255, 255, 255)
+end
+
+message = ""
+
+msg = {
+	welcome  = "Welcome to Animeye, drop a sprite sheet to the screen.",
+	img_drop = "Sprite sheet dropped.",
+	err_ext  = "Error! File type is not supported.",
+	err_num  = "You can only use positive numbers in the margin.",
+	err_flt  = "You can only use positive decimals in the margin."
+}
+
+function printMessage()
+	love.graphics.print(message, dock_width + 5, love.graphics.getHeight() - cli_height + 5)
+end

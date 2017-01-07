@@ -20,11 +20,14 @@ frame  = {value = 1,   min = 1, max = 64}
 speed  = {value = 0.2, min = 0, max = 1}
 scale  = {value = 1,   min = 0, max = 5}
 
-local dock_width = 270
+dock_width = 270
+cli_height = 25
 
 function love.load()
     require 'anim'
     require 'disp'
+
+    message = msg.welcome
 
     lg.setDefaultFilter('nearest', 'nearest')
 
@@ -72,9 +75,9 @@ function love.draw()
         love.graphics.draw(drop, (love.graphics.getWidth() - dock_width) / 2 + 220, love.graphics.getHeight() / 2 - 50)
     end
 
-    love.graphics.setColor(20, 30, 45, 255)
-    love.graphics.rectangle('fill', 0, 0, dock_width, love.graphics.getHeight())
-    love.graphics.setColor(255, 255, 255, 255)
+    drawDock()
+    drawConsole()
+    printMessage()
 
     suit.draw()
 end
@@ -85,6 +88,8 @@ function love.filedropped(file)
     image_path = string.gsub(file:getFilename(), '\\', '/')
     image_data = love.image.newImageData(file)
     createAnimation(image_data)
+
+    message = msg.img_drop
 end
 
 function love.textinput(t)
