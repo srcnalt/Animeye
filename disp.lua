@@ -38,16 +38,9 @@ function displayFrameWidthTool()
 	suit.Label("Frame width: ", {align = "left"}, suit.layout:row(120, 20))
 
     if suit.Input(input_width, suit.layout:col(130, 20)).submitted then
-        n = tonumber(input_width.text)
+        local n = tonumber(input_width.text)
 
-        --TODO: Add error message for this
-        --also should be moved into a function for max and minus check
-        if n > width.max or n < 1 then
-            input_width.text = tostring(math.floor(width.value))
-            return
-        end
-
-        width.value = n
+        checkNumber(n, width, input_width)
 
         animReload()
     end
@@ -70,13 +63,7 @@ function displayFrameHeightTool()
 	if suit.Input(input_height, suit.layout:col(130, 20)).submitted then
         n = tonumber(input_height.text)
 
-        --TODO: Add error message for this
-        if n > height.max or n < 1 then
-            input_height.text = tostring(math.floor(height.value))
-            return
-        end
-
-        height.value = n
+        checkNumber(n, height, input_height)
 
         animReload()
     end
@@ -99,11 +86,7 @@ function displayGoToFrameTool()
     if suit.Input(input_frame, suit.layout:col(60, 20)).submitted then
         n = tonumber(input_frame.text)
 
-        --TODO: Add error message for this
-        if n > frame.max or n < 1 then
-            input_frame.text = tostring(math.floor(frame.value))
-            return
-        end
+        checkNumber(n, frame, input_frame)
 
         if n > anims.count then
             n = anims.count
@@ -112,7 +95,6 @@ function displayGoToFrameTool()
 
         anims.stop  = true
         anims.pos   = n
-        frame.value = n
     end
 
     suit.layout:col(10, 0)
@@ -138,13 +120,7 @@ function displayAnimSpeedTool()
     if suit.Input(input_speed, suit.layout:col(130, 20)).submitted then
         n = tonumber(input_speed.text)
 
-        --TODO: Add error message for this
-        if n > speed.max or n < 1 then
-            input_speed.text = tostring(math.floor(speed.value))
-            return
-        end
-
-        speed.value = n
+        checkNumber(n, speed, input_speed)
     end
 
     suit.layout._x = 10
@@ -163,14 +139,7 @@ function displayScaleFactorTool()
     if suit.Input(input_scale, suit.layout:col(130, 20)).submitted then
         n = tonumber(input_scale.text)
 
-        --TODO: Add error message for this
-        if n > scale.max or n < 0 then
-            input_scale.text = tostring(math.floor(scale.value))
-            return
-        end
-
-        scale.value = n
-
+        checkNumber(n, scale, input_scale)
     end
 
     suit.layout._x = 10
@@ -192,6 +161,16 @@ function displayRefreshTool()
     suit.layout:row(0, 5)
 end
 
+function checkNumber(n, var, input_var)
+	if n > var.max or n < 1 then
+        input_var.text = tostring(math.floor(var.value))
+    	message = msg.err_num
+        return
+    end
+
+    var.value = n
+end
+
 function drawDock()
 	love.graphics.setColor(20, 30, 45, 255)
     love.graphics.rectangle('fill', 0, 0, dock_width, love.graphics.getHeight())
@@ -210,8 +189,7 @@ msg = {
 	welcome  = "Welcome to Animeye, drop a sprite sheet to the screen.",
 	img_drop = "Sprite sheet dropped.",
 	err_ext  = "Error! File type is not supported.",
-	err_num  = "You can only use positive numbers in the margin.",
-	err_flt  = "You can only use positive decimals in the margin."
+	err_num  = "You can only use positive numbers in the margin."
 }
 
 function printMessage()
