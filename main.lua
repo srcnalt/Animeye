@@ -64,22 +64,14 @@ function love.update(dt)
 
         width.value = n
 
-        --TODO: move this into a method (1)
-        if created then
-            anims:reload(math.floor(width.value), math.floor(height.value))
-            frame.max = anims.count + 0.9
-        end 
+        animReload()
     end
 
     suit.layout._x = 10
 
     if suit.Slider(width, {align = "left"}, suit.layout:row(250, 20)).changed then
         
-        --TODO: move this into a method (2)
-        if created then
-            anims:reload(math.floor(width.value), math.floor(height.value))
-            frame.max = anims.count + 0.9
-        end 
+        animReload()
 
         input_width.text = tostring(math.floor(width.value))
     end
@@ -99,22 +91,14 @@ function love.update(dt)
 
         height.value = n
 
-        --TODO: move this into a method (3)
-        if created then
-            anims:reload(math.floor(width.value), math.floor(height.value))
-            frame.max = anims.count + 0.9
-        end 
+        animReload()
     end
 
     suit.layout._x = 10
 
     if suit.Slider(height, {align = "left"}, suit.layout:row(250, 20)).changed then
         
-        --TODO: move this into a method (4)
-        if created then
-            anims:reload(math.floor(width.value), math.floor(height.value))
-            frame.max = anims.count + 0.9
-        end
+        animReload()
 
         input_height.text = tostring(math.floor(height.value))
     end

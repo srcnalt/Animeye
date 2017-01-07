@@ -1,3 +1,10 @@
+function animReload()
+	if created then
+        anims:reload(math.floor(width.value), math.floor(height.value))
+        frame.max = anims.count + 0.9
+    end 
+end
+
 function changeBackgroundColor(button, suit)
 	if suit.ImageButton(button.normal, {hovered = button.hover, active = button.active}, suit.layout:col(66, 20)).hit then
         love.graphics.setBackgroundColor(button.color)
