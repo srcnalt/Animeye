@@ -1,24 +1,24 @@
 lg = love.graphics
 
-local image_path = ""
-local image = {}
-local anims = {}
-
-local created  = false
-
-local input_width  = {text = '128'}
-local input_height = {text = '128'}
-local input_frame  = {text = '1'}
-local input_speed  = {text = '0.2'}
-local input_scale  = {text = '1'}
-
 local suit   = require 'suit'
 
-local width  = {value = 128, min = 1, max = 256}
-local height = {value = 128, min = 1, max = 256}
-local frame  = {value = 1,   min = 1, max = 64}
-local speed  = {value = 0.2, min = 0, max = 1}
-local scale  = {value = 1,   min = 0, max = 5}
+image_path = ""
+image = {}
+anims = {}
+
+created  = false
+
+input_width  = {text = '128'}
+input_height = {text = '128'}
+input_frame  = {text = '1'}
+input_speed  = {text = '0.2'}
+input_scale  = {text = '1'}
+
+width  = {value = 128, min = 1, max = 256}
+height = {value = 128, min = 1, max = 256}
+frame  = {value = 1,   min = 1, max = 64}
+speed  = {value = 0.2, min = 0, max = 1}
+scale  = {value = 1,   min = 0, max = 5}
 
 local dock_width = 270
 
