@@ -11,12 +11,14 @@ created  = false
 input_width  = {text = '128'}
 input_height = {text = '128'}
 input_frame  = {text = '1'}
+input_count  = {text = '2'}
 input_speed  = {text = '0.2'}
 input_scale  = {text = '1'}
 
 width  = {value = 128, min = 1, max = 256}
 height = {value = 128, min = 1, max = 256}
-frame  = {value = 1,   min = 1, max = 64}
+frame  = {value = 1,   min = 1, max = 128}
+count  = {value = 2,   min = 2, max = 128}
 speed  = {value = 0.2, min = 0, max = 1}
 scale  = {value = 1,   min = 0, max = 5}
 
@@ -56,6 +58,7 @@ function love.update(dt)
     displayFrameWidthTool()
     displayFrameHeightTool()
     displayGoToFrameTool()
+    displayNumberOfFramesTool()
     displayAnimSpeedTool()
     displayScaleFactorTool()
     displayRefreshTool()
@@ -70,9 +73,9 @@ end
 
 function love.draw()
     if created then
-        anims:draw((love.graphics.getWidth() - dock_width) / 2 + dock_width - width.value * scale.value / 2, love.graphics.getHeight() / 2 - height.value * scale.value / 2, 0, scale.value, scale.value)
+        anims:draw((lg.getWidth() - dock_width) / 2 + dock_width - width.value * scale.value / 2, lg.getHeight() / 2 - height.value * scale.value / 2, 0, scale.value, scale.value)
     else
-        love.graphics.draw(drop, (love.graphics.getWidth() - dock_width) / 2 + 220, love.graphics.getHeight() / 2 - 50)
+        love.graphics.draw(drop, (lg.getWidth() - dock_width) / 2 + 220, lg.getHeight() / 2 - 50)
     end
 
     drawDock()

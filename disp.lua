@@ -1,6 +1,6 @@
 function animReload()
 	if created then
-        anims:reload(math.floor(width.value), math.floor(height.value))
+        anims:reload(math.floor(width.value), math.floor(height.value), count.value)
         frame.max = anims.count + 0.9
     end 
 end
@@ -18,6 +18,10 @@ function createAnimation(img)
     frame.max   = anims.count + 0.9
     frame.value = 1
     input_frame.text = '1'
+
+    count.max   = anims.count + 0.9
+    count.value = anims.count
+    input_count.text = tostring(anims.count)
 
     created = true
 end
@@ -109,6 +113,28 @@ function displayGoToFrameTool()
         anims.stop = true
         input_frame.text = tostring(math.floor(frame.value))
         anims.pos  = tonumber(input_frame.text)
+    end
+
+    suit.layout:row(0, 5)
+end
+
+function displayNumberOfFramesTool()
+	suit.Label("Number of frames: ", {align = "left"}, suit.layout:row(120, 20))
+
+	if suit.Input(input_count, suit.layout:col(130, 20)).submitted then
+        n = tonumber(input_count.text)
+
+        checkNumber(n, count, input_count)
+
+        animReload()
+    end
+
+    suit.layout._x = 10
+
+    if suit.Slider(count, {align = "left"}, suit.layout:row(250, 20)).changed then
+        animReload()
+
+        input_count.text = tostring(math.floor(count.value))
     end
 
     suit.layout:row(0, 5)

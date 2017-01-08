@@ -50,7 +50,7 @@ function anim:update(dt)
 	end
 end
 
-function anim:reload(fw, fh)
+function anim:reload(fw, fh, fc)
 	--TODO: Raise error here when console implemented
 	if fw > self.iw or fh > self.ih then return end
 
@@ -58,10 +58,16 @@ function anim:reload(fw, fh)
 	local row   = math.ceil(self.ih / fh)
 
 	self.count  = col * row
+	count.max   = self.count
 	self.frames = {}
+
+	local c = 0
 
 	for i = 0, row - 1, 1 do
 		for j = 0, col - 1, 1 do
+			if c >= fc  then return end --return if frame count reached
+
+			c = c + 1
 			table.insert(self.frames, love.graphics.newQuad(fw * j, fh * i, fw, fh, self.iw, self.ih))
 		end
 	end
