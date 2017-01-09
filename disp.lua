@@ -5,7 +5,7 @@ function animReload()
     end 
 end
 
-function changeBackgroundColor(button, suit)
+function changeBackgroundColor(button)
 	if suit.ImageButton(button.normal, {hovered = button.hover, active = button.active}, suit.layout:col(66, 20)).hit then
         love.graphics.setBackgroundColor(button.color)
     end
@@ -187,6 +187,12 @@ function displayRefreshTool()
     suit.layout:row(0, 5)
 end
 
+function displayInfoButton(button)
+	if suit.ImageButton(button.normal, {hovered = button.hover, active = button.active}, 10, lg.getHeight() - 30).hit then
+        message = msg.not_yet
+    end
+end
+
 function checkNumber(n, var, input_var)
 	if n > var.max or n < 1 then
         input_var.text = tostring(math.floor(var.value))
@@ -205,7 +211,7 @@ end
 
 function drawConsole()
 	love.graphics.setColor(140, 140, 140, 255)
-    love.graphics.rectangle('fill', dock_width, love.graphics.getHeight() - cli_height, love.graphics.getWidth() - dock_width, cli_height)
+    love.graphics.rectangle('fill', dock_width, lg.getHeight() - cli_height, lg.getWidth() - dock_width, cli_height)
     love.graphics.setColor(255, 255, 255, 255)
 end
 
@@ -215,7 +221,8 @@ msg = {
 	welcome  = "Welcome to Animeye, drop a sprite sheet to the screen.",
 	img_drop = "Sprite sheet dropped.",
 	err_ext  = "Error! File type is not supported.",
-	err_num  = "You can only use positive numbers in the margin."
+	err_num  = "You can only use positive numbers in the margin.",
+	not_yet  = "This feature is not yet implemented."
 }
 
 function printMessage()

@@ -42,6 +42,10 @@ function love.load()
         {color = {199, 46,  18},  normal = lg.newImage('img/buttons/button_4.png'), hover = lg.newImage('img/buttons/hover_4.png'), active = lg.newImage('img/buttons/active_4.png')}
     }
 
+    info = {
+        normal = lg.newImage('img/buttons/info_1.png'), hover = lg.newImage('img/buttons/info_2.png'), active = lg.newImage('img/buttons/info_3.png')
+    }
+
     lg.setBackgroundColor(buttons[1].color)
 end
 
@@ -65,10 +69,12 @@ function love.update(dt)
 
     suit.layout:row(0, 5)
 
-    changeBackgroundColor(buttons[1], suit)
-    changeBackgroundColor(buttons[2], suit)
-    changeBackgroundColor(buttons[3], suit)
-    changeBackgroundColor(buttons[4], suit)
+    changeBackgroundColor(buttons[1])
+    changeBackgroundColor(buttons[2])
+    changeBackgroundColor(buttons[3])
+    changeBackgroundColor(buttons[4])
+
+    displayInfoButton(info)
 end
 
 function love.draw()
