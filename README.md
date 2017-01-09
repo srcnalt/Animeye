@@ -1,5 +1,5 @@
 # Animeye
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/srcnalt/Animeye/tree/master/Build)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](https://github.com/srcnalt/Animeye/tree/master/Build)
 [![LOVE](https://img.shields.io/badge/L%C3%96VE-0.10.2-ff69b4.svg)](http://love2d.org/)
 [![License](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE.md)
 
