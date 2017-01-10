@@ -194,13 +194,24 @@ function displayInfoButton(button)
 end
 
 function checkNumber(n, var, input_var)
-	if n > var.max or n < 1 then
+    if not isNumber(input_var.text) then 
+        input_var.text = tostring(math.floor(var.value))
+        message = msg.only_nr
+        return
+    end 
+
+	if n < var.max or n > 1 then
         input_var.text = tostring(math.floor(var.value))
     	message = msg.err_num
         return
     end
 
     var.value = n
+end
+
+function isNumber(i)
+    if string.match(i, '[^0-9]') == nil then return true end
+    return false
 end
 
 function drawDock()
@@ -222,7 +233,8 @@ msg = {
 	img_drop = "Sprite sheet dropped.",
 	err_ext  = "Error! File type is not supported.",
 	err_num  = "You can only use positive numbers in the margin.",
-	not_yet  = "This feature is not yet implemented."
+	not_yet  = "This feature is not yet implemented.",
+    only_nr  = "You can only use numeric values."
 }
 
 function printMessage()
