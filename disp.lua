@@ -194,24 +194,26 @@ function displayInfoButton(button)
 end
 
 function checkNumber(n, var, input_var)
-    if not isNumber(input_var.text) then 
+    if isNumber(input_var.text) then
+        if n > var.max or n < 1 then
+            input_var.text = tostring(math.floor(var.value))
+            message = msg.err_num
+            return
+        end
+
+        var.value = n
+    else
         input_var.text = tostring(math.floor(var.value))
         message = msg.only_nr
-        return
-    end 
-
-	if n < var.max or n > 1 then
-        input_var.text = tostring(math.floor(var.value))
-    	message = msg.err_num
-        return
     end
-
-    var.value = n
 end
 
 function isNumber(i)
-    if string.match(i, '[^0-9]') == nil then return true end
-    return false
+    if string.match(i, '[^0-9]') == nil then 
+        return true
+    else
+        return false
+    end
 end
 
 function drawDock()
