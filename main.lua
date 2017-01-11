@@ -98,7 +98,7 @@ function love.filedropped(file)
     image_data = love.image.newImageData(file)
     createAnimation(image_data)
 
-    message = msg.img_drop
+    message = msg.img_drp
 end
 
 function love.textinput(t)

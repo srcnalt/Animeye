@@ -232,11 +232,12 @@ message = ""
 
 msg = {
 	welcome  = "Welcome to Animeye, drop a sprite sheet to the screen.",
-	img_drop = "Sprite sheet dropped.",
+	img_drp  = "Sprite sheet dropped.",
 	err_ext  = "Error! File type is not supported.",
 	err_num  = "You can only use positive numbers in the margin.",
 	not_yet  = "This feature is not yet implemented.",
-    only_nr  = "You can only use numeric values."
+    only_nr  = "You can only use numeric values.",
+    only_ps  = "You can only enter positive values" --not yet implemented
 }
 
 function printMessage()
